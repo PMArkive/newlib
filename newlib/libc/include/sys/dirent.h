@@ -7,6 +7,7 @@
 #ifndef _dirent_h_
 #define _dirent_h_
 
+#include <sys/iosupport.h>
 #include <sys/types.h>
 #include <sys/syslimits.h>
 
@@ -31,12 +32,6 @@ struct dirent {
 	unsigned char  d_type;
 	char	d_name[NAME_MAX+1];
 };
-
-/* Directory iterator for mantaining state between dir* calls */
-typedef struct {
-    int device;
-    void *dirStruct;
-} DIR_ITER;
 
 typedef struct {
 	long int        position;
