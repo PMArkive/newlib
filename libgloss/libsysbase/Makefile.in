@@ -78,7 +78,7 @@ EVALOBJS = ${OBJS}
 GCC_LDFLAGS = `if [ -d ${objroot}/../gcc ] ; \
 	then echo -L${objroot}/../gcc ; fi`
 
-OUTPUTS = libsysbase.a
+OUTPUTS = libsysbase.a libpthread.a
 
 NEWLIB_CFLAGS = `if [ -d ${objroot}/newlib ]; then echo -I${objroot}/newlib/targ-include -I${srcroot}/newlib/libc/include; fi`
 NEWLIB_LDFLAGS = `if [ -d ${objroot}/newlib ]; then echo -B${objroot}/newlib/ -L${objroot}/newlib/; fi`
@@ -121,6 +121,9 @@ all: ${OUTPUTS}
 libsysbase.a: $(EVALOBJS)
 	${AR} ${ARFLAGS} $@ $(EVALOBJS)
 	${RANLIB} $@
+
+libpthread.a:
+	${AR} rc $@
 
 doc:
 
