@@ -69,37 +69,43 @@ typedef struct {
 
 extern const devoptab_t *devoptab_list[];
 
-typedef struct {
-	void *(*sbrk_r) (struct _reent *ptr, ptrdiff_t incr);
-	void (*exit) ( int rc );
-	int  (*gettod_r) (struct _reent *ptr, struct timeval *tp, struct timezone *tz);
-	void (*lock_acquire) (_LOCK_T *lock);
-	int  (*lock_try_acquire) (_LOCK_T *lock);
-	void (*lock_release) (_LOCK_T *lock);
-	void (*lock_acquire_recursive) (_LOCK_RECURSIVE_T *lock);
-	int  (*lock_try_acquire_recursive) (_LOCK_RECURSIVE_T *lock);
-	void (*lock_release_recursive) (_LOCK_RECURSIVE_T *lock);
-	int  (*cond_signal)(_COND_T *cond);
-	int  (*cond_broadcast)(_COND_T *cond);
-	int  (*cond_wait)(_COND_T *cond, _LOCK_T *lock, uint64_t timeout_ns);
-	int  (*cond_wait_recursive)(_COND_T *cond, _LOCK_RECURSIVE_T *lock, uint64_t timeout_ns);
-	int  (*thread_create)(struct __pthread_t **thread, void* (*func)(void*), void *arg, void *stack_addr, size_t stack_size);
-	void*(*thread_join)(struct __pthread_t *thread);
-	int  (*thread_detach)(struct __pthread_t *thread);
-	void (*thread_exit)(void *value);
-	struct __pthread_t *(*thread_self)(void);
-	int  (*tls_create)(uint32_t *key, void (*destructor)(void*));
-	int  (*tls_set)(uint32_t key, const void *value);
-	void*(*tls_get)(uint32_t key);
-	int  (*tls_delete)(uint32_t key);
-	struct _reent *(*getreent) ();
-	int (*clock_gettime)(clockid_t clock_id, struct timespec *tp);
-	int (*clock_settime)(clockid_t clock_id, const struct timespec *tp);
-	int (*clock_getres)(clockid_t clock_id, struct timespec *res);
-	int (*nanosleep)(const struct timespec *req, struct timespec *rem);
-} __syscalls_t;
+#ifdef _BUILDING_LIBSYSBASE
+#define __SYSCALL(_name) __attribute__((weak)) __syscall_##_name
+#define __has_syscall(_name) (&__syscall_##_name)
+#else
+#define __SYSCALL(_name) __syscall_##_name
+#endif
 
-extern __syscalls_t __syscalls;
+void __SYSCALL(exit)(int rc);
+struct _reent *__SYSCALL(getreent)(void);
+
+void __SYSCALL(lock_acquire)(_LOCK_T *lock);
+int  __SYSCALL(lock_try_acquire)(_LOCK_T *lock);
+void __SYSCALL(lock_release)(_LOCK_T *lock);
+void __SYSCALL(lock_acquire_recursive)(_LOCK_RECURSIVE_T *lock);
+int  __SYSCALL(lock_try_acquire_recursive)(_LOCK_RECURSIVE_T *lock);
+void __SYSCALL(lock_release_recursive)(_LOCK_RECURSIVE_T *lock);
+int  __SYSCALL(cond_signal)(_COND_T *cond);
+int  __SYSCALL(cond_broadcast)(_COND_T *cond);
+int  __SYSCALL(cond_wait)(_COND_T *cond, _LOCK_T *lock, uint64_t timeout_ns);
+int  __SYSCALL(cond_wait_recursive)(_COND_T *cond, _LOCK_RECURSIVE_T *lock, uint64_t timeout_ns);
+int  __SYSCALL(thread_create)(struct __pthread_t **thread, void* (*func)(void*), void *arg, void *stack_addr, size_t stack_size);
+void*__SYSCALL(thread_join)(struct __pthread_t *thread);
+int  __SYSCALL(thread_detach)(struct __pthread_t *thread);
+void __SYSCALL(thread_exit)(void *value);
+struct __pthread_t *__SYSCALL(thread_self)(void);
+int  __SYSCALL(tls_create)(uint32_t *key, void (*destructor)(void*));
+int  __SYSCALL(tls_set)(uint32_t key, const void *value);
+void*__SYSCALL(tls_get)(uint32_t key);
+int  __SYSCALL(tls_delete)(uint32_t key);
+
+int  __SYSCALL(gettod_r)(struct _reent *ptr, struct timeval *tp, struct timezone *tz);
+int __SYSCALL(clock_gettime)(clockid_t clock_id, struct timespec *tp);
+int __SYSCALL(clock_settime)(clockid_t clock_id, const struct timespec *tp);
+int __SYSCALL(clock_getres)(clockid_t clock_id, struct timespec *res);
+int __SYSCALL(nanosleep)(const struct timespec *req, struct timespec *rem);
+
+#undef __SYSCALL
 
 int AddDevice( const devoptab_t* device);
 int FindDevice(const char* name);
