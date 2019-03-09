@@ -435,17 +435,17 @@ pthread_create (pthread_t *__pthread, const pthread_attr_t *__attr, void *(*__st
 	}
 	if (!__pthread || !__start_routine)
 		return EINVAL;
-	if (!__syscalls.thread_create)
+	if (!__has_syscall(thread_create))
 		return ENOSYS;
-	return __syscalls.thread_create(__pthread, __start_routine, __arg, __attr->stackaddr, __attr->stacksize);
+	return __syscall_thread_create(__pthread, __start_routine, __arg, __attr->stackaddr, __attr->stacksize);
 }
 
 int
 pthread_join (pthread_t __pthread, void **__value_ptr)
 {
-	if (!__syscalls.thread_join)
+	if (!__has_syscall(thread_join))
 		return ENOSYS;
-	void* value = __syscalls.thread_join(__pthread);
+	void* value = __syscall_thread_join(__pthread);
 	if (__value_ptr)
 		*__value_ptr = value;
 	return 0;
@@ -454,24 +454,24 @@ pthread_join (pthread_t __pthread, void **__value_ptr)
 int
 pthread_detach (pthread_t __pthread)
 {
-	if (!__syscalls.thread_detach)
+	if (!__has_syscall(thread_detach))
 		return ENOSYS;
-	return __syscalls.thread_detach(__pthread);
+	return __syscall_thread_detach(__pthread);
 }
 
 void
 pthread_exit (void *__value_ptr)
 {
-	if (__syscalls.thread_exit)
-		__syscalls.thread_exit(__value_ptr);
+	if (__has_syscall(thread_exit))
+		__syscall_thread_exit(__value_ptr);
 	for (;;);
 }
 
 pthread_t
 pthread_self (void)
 {
-	if (__syscalls.thread_self)
-		return __syscalls.thread_self();
+	if (__has_syscall(thread_self))
+		return __syscall_thread_self();
 	return NULL;
 }
 
@@ -542,33 +542,33 @@ pthread_key_create (pthread_key_t *__key, void (*__destructor)(void *))
 {
 	if (!__key)
 		return EINVAL;
-	if (!__syscalls.tls_create)
+	if (!__has_syscall(tls_create))
 		return ENOSYS;
-	return __syscalls.tls_create(__key, __destructor);
+	return __syscall_tls_create(__key, __destructor);
 }
 
 int
 pthread_setspecific (pthread_key_t __key, const void *__value)
 {
-	if (!__syscalls.tls_set)
+	if (!__has_syscall(tls_set))
 		return ENOSYS;
-	return __syscalls.tls_set(__key, __value);
+	return __syscall_tls_set(__key, __value);
 }
 
 void *
 pthread_getspecific (pthread_key_t __key)
 {
-	if (__syscalls.tls_get)
-		return __syscalls.tls_get(__key);
+	if (__has_syscall(tls_get))
+		return __syscall_tls_get(__key);
 	return NULL;
 }
 
 int
 pthread_key_delete (pthread_key_t __key)
 {
-	if (!__syscalls.tls_delete)
+	if (!__has_syscall(tls_delete))
 		return ENOSYS;
-	return __syscalls.tls_delete(__key);
+	return __syscall_tls_delete(__key);
 }
 
 //-----------------------------------------------------------------------------
