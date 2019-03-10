@@ -119,7 +119,7 @@ am__objects_2 = lib_a-__adjust.$(OBJEXT) lib_a-__atexit.$(OBJEXT) \
 	lib_a-wcstoumax.$(OBJEXT) lib_a-wcstombs.$(OBJEXT) \
 	lib_a-wcstombs_r.$(OBJEXT) lib_a-wctomb.$(OBJEXT) \
 	lib_a-wctomb_r.$(OBJEXT) $(am__objects_1)
-am__objects_3 = lib_a-arc4random.$(OBJEXT) \
+am__objects_3 = lib_a-threads.$(OBJEXT) lib_a-arc4random.$(OBJEXT) \
 	lib_a-arc4random_uniform.$(OBJEXT) lib_a-cxa_atexit.$(OBJEXT) \
 	lib_a-cxa_finalize.$(OBJEXT) lib_a-drand48.$(OBJEXT) \
 	lib_a-ecvtbuf.$(OBJEXT) lib_a-efgcvt.$(OBJEXT) \
@@ -173,7 +173,7 @@ am__objects_9 = __adjust.lo __atexit.lo __call_atexit.lo __exp10.lo \
 	utoa.lo wcstod.lo wcstoimax.lo wcstol.lo wcstoul.lo \
 	wcstoumax.lo wcstombs.lo wcstombs_r.lo wctomb.lo wctomb_r.lo \
 	$(am__objects_8)
-am__objects_10 = arc4random.lo arc4random_uniform.lo cxa_atexit.lo \
+am__objects_10 = threads.lo arc4random.lo arc4random_uniform.lo cxa_atexit.lo \
 	cxa_finalize.lo drand48.lo ecvtbuf.lo efgcvt.lo erand48.lo \
 	jrand48.lo lcong48.lo lrand48.lo mrand48.lo msize.lo mtrim.lo \
 	nrand48.lo rand48.lo seed48.lo srand48.lo strtoll.lo \
@@ -1053,6 +1053,12 @@ lib_a-wcstold.o: wcstold.c
 
 lib_a-wcstold.obj: wcstold.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-wcstold.obj `if test -f 'wcstold.c'; then $(CYGPATH_W) 'wcstold.c'; else $(CYGPATH_W) '$(srcdir)/wcstold.c'; fi`
+
+lib_a-threads.o: threads.c
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-threads.o `test -f 'threads.c' || echo '$(srcdir)/'`threads.c
+
+lib_a-threads.obj: threads.c
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-threads.obj `if test -f 'threads.c'; then $(CYGPATH_W) 'threads.c'; else $(CYGPATH_W) '$(srcdir)/threads.c'; fi`
 
 lib_a-arc4random.o: arc4random.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-arc4random.o `test -f 'arc4random.c' || echo '$(srcdir)/'`arc4random.c
