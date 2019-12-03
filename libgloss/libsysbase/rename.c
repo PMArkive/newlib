@@ -13,11 +13,14 @@ int rename(const char *existing, const char *newName)
 #endif
 	struct _reent *r = _REENT;
 
-	int ret;
+	int ret = -1;
 	int sourceDev = FindDevice(existing);
 	int destDev = FindDevice(newName);
 
-	ret = -1;
+        if (sourceDev == -1 || destDev == -1 ) {
+                r->_errno = ENODEV;
+                return ret;
+        }
 
 	if ( sourceDev == destDev) {
 		if (devoptab_list[destDev]->rename_r) {

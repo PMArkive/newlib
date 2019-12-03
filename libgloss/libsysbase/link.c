@@ -11,11 +11,14 @@ int _link_r(struct _reent *r, const char *existing, const char *new) {
 int _link(const char *existing, const char *new) {
 	struct _reent *r = _REENT;
 #endif
-	int ret;
+	int ret = -1;
 	int sourceDev = FindDevice(existing);
 	int destDev = FindDevice(new);
 
-	ret = -1;
+	if (sourceDev == -1 || destDev == -1 ) {
+		r->_errno = ENODEV;
+		return ret;
+	}
 
 	if ( sourceDev == destDev) {
 		if (devoptab_list[destDev]->link_r) {
