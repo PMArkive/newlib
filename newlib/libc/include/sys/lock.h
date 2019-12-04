@@ -16,6 +16,10 @@ typedef struct __lock_t _LOCK_RECURSIVE_T;
 
 typedef uint32_t _COND_T;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern void __libc_lock_init(_LOCK_T *lock);
 extern void __libc_lock_init_recursive(_LOCK_RECURSIVE_T *lock);
 extern void __libc_lock_close(_LOCK_T *lock);
@@ -35,6 +39,10 @@ extern int __libc_cond_signal(_COND_T *cond);
 extern int __libc_cond_broadcast(_COND_T *cond);
 extern int __libc_cond_wait(_COND_T *cond, _LOCK_T *lock, uint64_t timeout_ns);
 extern int __libc_cond_wait_recursive(_COND_T *cond, _LOCK_RECURSIVE_T *lock, uint64_t timeout_ns);
+
+#ifdef __cplusplus
+}
+#endif
 
 #define __LOCK_INITIALIZER ((_LOCK_T)0)
 #define __LOCK_INITIALIZER_RECURSIVE ((_LOCK_RECURSIVE_T){__LOCK_INITIALIZER,0,0})
