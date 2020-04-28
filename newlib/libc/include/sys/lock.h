@@ -4,7 +4,7 @@
 #include <_ansi.h>
 #include <stdint.h>
 
-typedef int32_t _LOCK_T;
+typedef uint32_t _LOCK_T;
 
 struct __lock_t {
 	_LOCK_T lock;
